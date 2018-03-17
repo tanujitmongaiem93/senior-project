@@ -1,6 +1,6 @@
 from django.db import models
 
-# Create your models here.
+
 class Information(models.Model):
     student_id = models.CharField(max_length=8, db_index=True)
     name_title = models.CharField(max_length=6)
@@ -11,6 +11,13 @@ class Information(models.Model):
     image = models.ImageField(upload_to='student_image/', null=True)
     is_active = models.BooleanField(default=True)
     is_register = models.BooleanField(default=False)
+
+    first_check = models.NullBooleanField(default=False)
+    second_check = models.NullBooleanField(default=False)
+    third_check = models.NullBooleanField(default=False)
+    first_stamp = models.DateTimeField(null=True)
+    second_stamp = models.DateTimeField(null=True)
+    third_stamp = models.DateTimeField(null=True)
 
     class Meta:
         ordering = ['student_id']
@@ -49,13 +56,3 @@ class Information(models.Model):
                     student.image = f
                     student.image.save(filename, f)
         return
-
-
-class Attendance(models.Model):
-    information = models.OneToOneField(Information,on_delete=models.CASCADE)
-    first_check = models.BooleanField(default=False)
-    second_check = models.BooleanField(default=False)
-    third_check = models.BooleanField(default=False)
-    first_stamp = models.DateTimeField()
-    second_stamp = models.DateTimeField()
-    third_stamp = models.DateTimeField()

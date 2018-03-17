@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 from rest_framework_swagger.views import get_swagger_view
 from rest_framework.routers import DefaultRouter
 
-from student.views import StudentViewSet
+from student.views import StudentViewSet, CSVUploadView, ImageUploadView
 
 schema_view = get_swagger_view(title='Tom API')
 router = DefaultRouter()
@@ -13,6 +13,8 @@ router = DefaultRouter()
 router.register(r'student', StudentViewSet)
 
 urlpatterns = [
+    path('upload/csv/<filename>', CSVUploadView.as_view()),
+    path('upload/student-image/<filename>', ImageUploadView.as_view()),
     path('', schema_view),
     path('', include(router.urls)),
     path('admin/', admin.site.urls),
