@@ -70,7 +70,7 @@ class CSVUploadView(APIView):
                 temp_degree = degree
 
             if not Information.objects.filter(student_id=row.student_id).exists():
-                student = Information.objects.create(
+                Information.objects.create(
                     order=row.order,
                     student_id=row.student_id,
                     name_title=row.name_title,
@@ -80,6 +80,7 @@ class CSVUploadView(APIView):
                     faculty=temp_faculty,
                     major=temp_major
                 ).save()
+                print(row.student_id)
             else:
                 print('eiei')
         delete_degree.delete()
@@ -278,6 +279,16 @@ class StudentViewSet(mixins.ListModelMixin,
     @list_route(methods=["get"],url_path="count_all_check")
     def count_all_check(self,request):
         student_list = Information.objects.filter(first_check=True,second_check=True,third_check=True,is_active=True)
+        if not student_list:
+            response = {
+                "all_student": 0,
+                "first_student_id": None
+            }
+        else:
+            response = {
+                "all_student":student_list.count(),
+                "first_student_id": student_list.first().student_id
+            }
         return Response({"all_student":student_list.count(),
                          "first_student_id": student_list.first().student_id})
 
